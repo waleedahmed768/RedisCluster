@@ -1,0 +1,28 @@
+Create Route for console/Ui for redis 
+
+sudo vi route.yaml
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: route-redis
+  namespace: transformation-dev
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: route-redis-transformation-dev.apps.snc-ocp4.test.com.pk
+  to:
+    kind: Service
+    name: rec-ui
+    weight: 100
+  port:
+    targetPort: ui
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
+
+Get username and password for console login
+
+oc get secret rec -o jsonpath='{.data.password}' | base64 --decode
+ oc get secret rec -o jsonpath='{.data.username}' | base64 --decode
